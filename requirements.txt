@@ -1,0 +1,17 @@
+altgraph==0.17
+click==7.1.2
+Flask==1.1.2
+importlib-metadata==3.4.0
+itsdangerous==1.1.0
+Jinja2==2.11.2
+livereload==2.6.3
+macholib==1.14
+MarkupSafe==1.1.1
+pyinstaller==4.2
+pyinstaller-hooks-contrib==2020.11
+python-dotenv==0.15.0
+six==1.15.0
+tornado==6.1
+typing-extensions==3.7.4.3
+Werkzeug==1.0.1
+zipp==3.4.0
