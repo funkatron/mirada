@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 # get the path to the directory where this file is located
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
-PROJ_PATH = os.path.abspath(os.path.join(BASE_PATH, '../'))
+PROJ_PATH = os.path.abspath(os.path.join(BASE_PATH, '..'))
 load_dotenv(os.path.join(PROJ_PATH, '.env'))
 
 
@@ -16,7 +16,7 @@ app = Flask(
     static_folder=os.path.join(PROJ_PATH, 'static'),
 )
 
-
+# @TODO move these to a special admin/system blueprint, with its own templates and stuff
 @app.route('/_ping')
 def ping():
     return jsonify({'response': 'pong'})
