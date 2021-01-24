@@ -29,7 +29,7 @@ WIP
 
 ### What Goes Where
 
-- `_build_/`: Static builds of sites will be written here.
+- `_dist/`: Static builds of sites will be written here.
 - `mirada/`: The python application that powers the web server. You can ignore this.
 - `static/`: Anything not built from templates should be placed and served from here. This maps to the `/static/` URI path.
 - `templates/`: Jinja2 templates to render HTML to the browser when a request is made.
@@ -49,3 +49,9 @@ WIP. Tested only on MacOS at this time.
 7. Run `pip install -r ./requirements.txt` to install project requirements.
 8. Run `flask run`.  It should start the flask dev server on port 5000.
 9. Visit http://0.0.0.0:5000.
+
+### Building
+
+1. `cd` to project base
+2. Run `source ./venv/bin/activate` to activate the virtual environment.
+3. Run `build-mirada-server.sh` (only on MacOS/Unices)
