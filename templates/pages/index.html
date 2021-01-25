@@ -1,10 +1,35 @@
-{# Use the basic HTML5 template. #}
-{% extends 'layouts/basic.html' %}
-
+{% extends 'layouts/bootstrap-vue.html' %}
 
 {% block content %}
-    {# Page content goes inside this block. #}
-    <h1>The Homepage</h1>
+<b-container>
+    <h1>
+        Mirada Bootstrap-Vue Example
+    </h1>
+    <p class="lead">Simple Vue/Bootstrap demo</p>
+    <b-table
+        responsive
+        selectable
+        select-mode="multi"
+        header-variant="primary"
+        foot-clone
+        hover
+        striped
+        bordered
+        no-provider-filtering
+        no-provider-paging
+        no-provider-sorting
+        primary-key="id"
+        :items="loadJsonFromUrl('https://run.mocky.io/v3/49562f6d-591d-48cd-ae7d-d569b2198943')"
+        :fields="[
+                { key: 'id', sortable: 'true' },
+                { key: 'first_name', sortable: 'true' },
+                { key: 'last_name', sortable: 'true' },
+                { key: 'email', sortable: 'true' },
+                { key: 'gender', sortable: 'true' },
+                { key: 'ip_address', sortable: 'true' },
+            ]">
+    </b-table>
 
-    <p>There are many like it, but this one is mine.</p>
+</b-container>
+
 {% endblock content %}

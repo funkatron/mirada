@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Testing Stuff</title>
+
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="/static/vendor/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="/static/vendor/bootstrap-vue.min.css" />
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"
+        crossorigin="anonymous"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="/static/vendor/vue.js"></script>
+    <script src="/static/vendor/bootstrap-vue.min.js"></script>
+
+    <!-- Load the following for BootstrapVueIcons support -->
+    <script src="/static/vendor/bootstrap-vue-icons.min.js"></script>
+
+    <script>
+
+    </script>
+
+</head>
+
+<body>
+    <!-- start here -->
+    <div id="dm-app">
+        {% block content %}
+            <span class='text-muted'>
+                This is the default layout content. Define a content block in your page template.
+            </span>
+        {% endblock content %}
+    </div>
+    <!--stop here-->
+
+    <script>
+        window.dmvm = new Vue({
+            el: "#dm-app",
+            data() {
+                return {}
+            },
+            methods: {
+                loadJsonFromUrl(url) {
+                    return function (ctx) {
+                        const promise = fetch(url)
+                        // resolve/return JSON array
+                        return promise.then(function (response) { return response.json() || [] });
+                    }
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
