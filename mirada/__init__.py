@@ -1,39 +1,55 @@
+import logging
 import os
+import sys
 
-from flask import Flask, jsonify
-from flask.templating import render_template
 from dotenv import load_dotenv
+from flask import Flask
 
-# get the path to the directory where this file is located
-BASE_PATH = os.path.abspath(os.path.dirname(__file__))
-PROJ_PATH = os.path.abspath(os.path.join(BASE_PATH, '..'))
-load_dotenv(os.path.join(PROJ_PATH, '.env'))
+from mirada.blueprints.mirada_blueprint import bp as admin_bp
+from mirada.blueprints.pages_blueprint import bp as pages_bp
+
+IS_BUNDLED = getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
+
+def create_app(name=__name__, template_folder: str = None, static_folder: str = None, debug: bool = None):
+    # get the path to the directory where this file is located
+    app = Flask(
+        name,
+        template_folder=template_folder,
+        static_folder=static_folder,
+    )
+    app.logger.setLevel(logging.DEBUG if debug is True else logging.INFO)
+    return app
 
 
-app = Flask(
-    __name__,
-    template_folder=os.path.join(PROJ_PATH, 'templates'),
-    static_folder=os.path.join(PROJ_PATH, 'static'),
-)
+def create_mirada_app(project_path: str = None):
+    if project_path is None:
+        project_path = os.getcwd()
 
-# @TODO move these to a special admin/system blueprint, with its own templates and stuff
-@app.route('/_ping')
-def ping():
-    return jsonify({'response': 'pong'})
+    # register the project page routing blueprint
+    project_template_folder = os.path.join(project_path, 'templates')
+    project_static_folder = os.path.join(project_path, 'static')
+    mirada_app = create_app(name='mirada', template_folder=project_template_folder, static_folder=project_static_folder)
 
-@app.route('/')
-@app.route('/<path:path_str>')
-def render_page(path_str: str = ''):
-    # This implements a "catch-all" route that renders HTML pages.
-    # URI paths are routed to template pages using this rule:
-    #   path/name -> templates/pages/path/name.html
+    mirada_app.logger.info(f'Mirada Server Startup')
+    mirada_app.logger.info(f'project_path="{project_path}"')
+    mirada_app.logger.debug(f'Config="{mirada_app.config}"')
 
-    # remove trailing slash, if present
-    path_str = path_str.rstrip('/')
+    mirada_app.register_blueprint(
+        pages_bp,
+        url_prefix='/',
+        template_folder=project_template_folder,
+        static_folder=project_static_folder
+    )
 
-    if not path_str:
-        # the "empty" path is mapped to 'index'
-        path_str = 'index'
+    # register the mirada admin blueprint
+    MIRADA_PROJ_PATH = os.path.abspath(os.path.dirname(__file__))
+    if IS_BUNDLED:
+        MIRADA_PROJ_PATH = os.path.abspath(getattr(sys, '_MEIPASS'))
 
-    # @TODO we need to make sure path_str is sanitized
-    return render_template(f'pages/{path_str}.html')
+    mirada_template_folder = os.path.join(MIRADA_PROJ_PATH, 'templates')
+    mirada_static_folder = os.path.join(MIRADA_PROJ_PATH, 'static')
+    mirada_app.register_blueprint(admin_bp, url_prefix='/_mirada', template_folder=mirada_template_folder, static_folder=mirada_static_folder)
+
+    return mirada_app
+
+
