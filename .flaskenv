@@ -1,1 +1,1 @@
-FLASK_APP=mirada:app
+FLASK_APP=mirada:create_mirada_app()
