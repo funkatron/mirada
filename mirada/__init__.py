@@ -28,13 +28,13 @@ def create_app(name=__name__, template_folder: str = None, static_folder: str = 
 
 def create_mirada_app(project_path: str = None):
     if project_path is None:
-        project_path = os.getenv('MIRADA_CURRENT_PROJECT_PATH', os.getcwd())
+        project_path = os.path.expanduser(os.getenv('MIRADA_CURRENT_PROJECT_PATH', default=os.getcwd()))
 
     load_dotenv()
 
     # register the project page routing blueprint
-    project_template_folder = os.path.join(project_path, 'templates')
-    project_static_folder = os.path.join(project_path, 'static')
+    project_template_folder = os.path.abspath(os.path.join(project_path, 'templates'))
+    project_static_folder = os.path.abspath(os.path.join(project_path, 'static'))
     mirada_app = create_app(name='mirada', template_folder=project_template_folder, static_folder=project_static_folder)
 
     mirada_app.logger.info(f'Mirada Server Startup')
@@ -43,8 +43,6 @@ def create_mirada_app(project_path: str = None):
     mirada_app.register_blueprint(
         pages_bp,
         url_prefix='/',
-        template_folder=project_template_folder,
-        static_folder=project_static_folder
     )
 
     mirada_app.logger.info(f'pages blueprint mounted to /')
