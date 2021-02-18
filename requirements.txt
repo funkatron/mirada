@@ -1,9 +1,10 @@
 altgraph==0.17
 click==7.1.2
 Flask==1.1.2
+frozen-flask==0.15
 importlib-metadata==3.4.0
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 livereload==2.6.3
 macholib==1.14
 MarkupSafe==1.1.1
