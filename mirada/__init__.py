@@ -23,6 +23,9 @@ def create_app(name=__name__, template_folder: str = None, static_folder: str = 
         static_folder=static_folder,
     )
     app.logger.setLevel(logging.DEBUG if debug is True else logging.INFO)
+    if not app.config.get('SECRET_KEY'):
+        app.config['SECRET_KEY'] = os.urandom(32)
+        app.logger.debug(f'SECRET_KEY was not set. Setting to "{app.config["SECRET_KEY"]}".')
     return app
 
 
@@ -36,6 +39,9 @@ def create_mirada_app(project_path: str = None):
     project_template_folder = os.path.abspath(os.path.join(project_path, 'templates'))
     project_static_folder = os.path.abspath(os.path.join(project_path, 'static'))
     mirada_app = create_app(name='mirada', template_folder=project_template_folder, static_folder=project_static_folder)
+
+    from flask_debugtoolbar import DebugToolbarExtension
+    DebugToolbarExtension(mirada_app)
 
     mirada_app.logger.info(f'Mirada Server Startup')
     mirada_app.logger.info(f'project_path="{project_path}"')
