@@ -11,7 +11,7 @@
     <link type="text/css" rel="stylesheet" href="/static/vendor/bootstrap-vue.min.css" />
 
     <!-- Load polyfills to support older browsers -->
-    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"
+    <script src="/static/vendor/polyfill_es2015_IntersectionObserver.min.js"
         crossorigin="anonymous"></script>
 
     <!-- Load Vue followed by BootstrapVue -->
@@ -38,11 +38,19 @@
     </div>
     <!--stop here-->
 
+    {% block page_component_options %}
+        <script>
+            let DMPageData = {};
+            let DMComputed = {};
+            let DMPageMethods = {};
+        </script>
+    {% endblock %}
+
     <script>
-        window.dmvm = new Vue({
+        let vuePageComponentOptions = {
             el: "#dm-app",
             data() {
-                return {}
+                return DMPageData
             },
             methods: {
                 loadJsonFromUrl(url) {
@@ -53,7 +61,11 @@
                     }
                 }
             }
-        })
+        };
+
+        Object.assign(vuePageComponentOptions.methods, DMPageMethods)
+
+        window.DMVM = new Vue(vuePageComponentOptions);
     </script>
 
 </body>

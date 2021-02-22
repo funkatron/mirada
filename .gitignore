@@ -1,5 +1,5 @@
 # Mirada-specific stuff
-# _build/*
+_dist/*
 
 
 # Byte-compiled / optimized / DLL files
